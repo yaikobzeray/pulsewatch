@@ -1,4 +1,4 @@
-package yaikob.tech.pulsewatch;
+package tech.yaikob.pulsewatch;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,4 +21,3 @@ public class DatabaseConnectionCheck implements CommandLineRunner{
     }
     
 }
-// https://github.com/yaikobzeray/pulsewatch.git
