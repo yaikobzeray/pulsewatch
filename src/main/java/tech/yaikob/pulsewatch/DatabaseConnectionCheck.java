@@ -1,23 +1,27 @@
 package tech.yaikob.pulsewatch;
 
+import java.sql.Connection;
+
+import javax.sql.DataSource;
+
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component 
 public class DatabaseConnectionCheck implements CommandLineRunner{
 
-    private final JdbcTemplate jdbcTemplate;
-    public DatabaseConnectionCheck(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    private final DataSource dataSource;
+    public DatabaseConnectionCheck(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        String database = jdbcTemplate.queryForObject("SELECT current_database()", String.class);
-        String user = jdbcTemplate.queryForObject("SELECT current_user", String.class);
-        System.out.println("Connected to database: " + database + " as user: " + user);
+        try( Connection connection = dataSource.getConnection()){
+            System.out.println("Connected to database: " + connection.getCatalog());
+            System.out.println("Connected as user: " + connection.getMetaData().getUserName());
+        }
     }
     
 }
