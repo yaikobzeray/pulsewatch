@@ -16,51 +16,31 @@ public class MonitorService {
         this.monitorRepository = monitorRepository;
     }
 
+    private MonitorResponse toResponse(Monitor monitor) {
+    return new MonitorResponse(monitor.getId(), monitor.getName(), monitor.getUrl(), monitor.isActive(), monitor.getCheckIntervalSeconds(), monitor.getCreatedAt());
+}
+
     public List<MonitorResponse> getActiveMonitors() {
-       return  monitorRepository.findByActiveTrue().stream().map(monitor -> new MonitorResponse(
-           monitor.getId(),
-           monitor.getName(),
-           monitor.getUrl(),
-           monitor.isActive(),
-           monitor.getCheckIntervalSeconds(),
-           monitor.getCreatedAt().toString()
-       )).toList();
+    
+
+    return monitorRepository.findByActiveTrue().stream().map(this::toResponse).toList();
     }
 
     public List<MonitorResponse> getAllMonitors() {
-        return monitorRepository.findAll().stream().map(monitor -> new MonitorResponse(
-            monitor.getId(),
-            monitor.getName(),
-            monitor.getUrl(),
-            monitor.isActive(),
-            monitor.getCheckIntervalSeconds(),
-            monitor.getCreatedAt().toString()
-        )).toList();
+        return monitorRepository.findAll().stream().map(this::toResponse).toList();
+
+
     }
 
  public Optional<MonitorResponse> getMonitorById(Long id) {
-
-    return monitorRepository.findById(id).map(monitor-> new MonitorResponse(
-        monitor.getId(),
-        monitor.getName(),
-        monitor.getUrl(),
-        monitor.isActive(),
-        monitor.getCheckIntervalSeconds(),
-        monitor.getCreatedAt().toString()
-    ));
-    }
+    return monitorRepository.findById(id).map(this::toResponse);
+ }
+      
 
     public MonitorResponse createMonitor(MonitorRequest monitor) {
         Monitor newMonitor = new Monitor(monitor.name(), monitor.url(), monitor.checkIntervalSeconds());
         Monitor createdMonitor = monitorRepository.save(newMonitor);
-        return new MonitorResponse(
-            createdMonitor.getId(),
-            createdMonitor.getName(),
-            createdMonitor.getUrl(),
-            createdMonitor.isActive(),
-            createdMonitor.getCheckIntervalSeconds(),
-            createdMonitor.getCreatedAt().toString()
-        );
+        return toResponse(createdMonitor);
     }
 
     public boolean deleteMonitor(Long id) {
