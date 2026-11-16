@@ -7,3 +7,4 @@ CREATE TABLE monitor(
  created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL
 
 );
+
