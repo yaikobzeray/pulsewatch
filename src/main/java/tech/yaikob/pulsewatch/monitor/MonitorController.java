@@ -3,6 +3,7 @@ package tech.yaikob.pulsewatch.monitor;
 import java.net.URI;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public class MonitorController {
 
     @PostMapping("/monitors")
     public ResponseEntity<MonitorResponse> createMonitor(
-            @RequestBody MonitorRequest monitor) {
+            @Valid @RequestBody MonitorRequest monitor) {
 
         MonitorResponse response = monitorService.createMonitor(monitor);
 
